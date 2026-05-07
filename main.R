@@ -1,0 +1,6 @@
+setwd("~/Projects/Microplastics")
+source("load.R", echo=TRUE)
+source("count.R", echo=TRUE)
+source("color.R", echo=TRUE)
+source("shape.R", echo=TRUE)
+source("length.R", echo=TRUE)

@@ -1,6 +1,4 @@
 setwd("~/Projects/Microplastics")
 source("scripts/load.R", echo=TRUE)
-source("scripts/count.R", echo=TRUE)
-source("scripts/color.R", echo=TRUE)
-source("scripts/shape.R", echo=TRUE)
-source("scripts/length.R", echo=TRUE)
+source("scripts/allplots.R", echo=TRUE)
+source("scripts/alltests.R", echo=TRUE)

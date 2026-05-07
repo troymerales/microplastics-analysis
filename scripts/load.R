@@ -73,6 +73,7 @@ mp_data <- data.frame(
   mp_shape
 )
 
+main_data$raw_count <- main_raw$"COUNT (particles per 20g)"
 mp_data$mp_length <- as.numeric(mp_data$mp_length)
 mp_data$mp_color <- droplevels(mp_data$mp_color)
 mp_data$mp_shape <- droplevels(mp_data$mp_shape)

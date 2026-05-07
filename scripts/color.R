@@ -1,6 +1,8 @@
 color_summary <- mp_data %>%
   count(mp_color)
 
+color_summary
+
 color_summary <- color_summary %>%
   arrange(desc(mp_color)) %>%
   mutate(
@@ -38,39 +40,52 @@ color_pie <- ggplot(color_summary,
   )
 
 color_pie
-# Save plot
-ggsave(
-  filename = "plots/color_pie.png",
-  plot = color_pie,
-  width = 7,
-  height = 7,
-  dpi = 900
-)
-
 #------------------------------------------------------------
 
-color_farm_plot <- ggplot(mp_data,
-                          aes(x = farm_mp,
-                              fill = mp_color)) +
-  geom_bar(position = "fill",
-           color = "white",
-           linewidth = 0.1) +
-  scale_fill_manual(name = "Color",
-    values = c(
-    "blue" = "#619cff",
-    "black" = "#202020",
-    "red" = "#ed5353",
-    "purple" = "#b071e3"
-  ),
-  na.value="lightgray"
+color_farm_plot <- ggplot(
+  mp_data %>% filter(!is.na(mp_color)),
+  aes(x = farm_mp,
+      fill = mp_color)
+) +
+  
+  geom_bar(
+    position = "fill",
+    color = "black",
+    linewidth = 0.2
   ) +
+  
+  scale_fill_manual(
+    name = "Color",
+    values = c(
+      "blue" = "#619cff",
+      "black" = "#202020",
+      "red" = "#ed5353",
+      "purple" = "#b071e3"
+    )
+  ) +
+  
   labs(
-    title = "Particle Color Comparison Between Farms",
     x = "Farm",
     y = "Proportion"
   ) +
-  scale_y_continuous(labels = scales::percent) +
-  theme_minimal()
+  
+  scale_y_continuous(
+    labels = scales::percent
+  ) +
+  
+  theme_minimal() +
+  
+  theme(
+    plot.title = element_text(
+      hjust = 0.5
+    ),
+    
+    panel.border = element_rect(
+      color = "black",
+      fill = NA,
+      linewidth = 1
+    )
+  )
 
 color_farm_plot
 
@@ -86,8 +101,6 @@ ggsave(
 
 color_table <- table(mp_data$farm_mp,
                      mp_data$mp_color)
-
-color_table
 
 chisq.test(color_table)
 fisher.test(color_table)

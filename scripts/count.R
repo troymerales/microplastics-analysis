@@ -2,15 +2,48 @@ mp_count_plot <- ggplot(main_data,
                         aes(x = farm,
                             y = mp_count,
                             fill = farm)) +
-  geom_boxplot(alpha = 0.7) +
-  geom_jitter(width = 0.1,
-              alpha = 0.5) +
-  labs(
-    title = "MP Count Comparison Between Farms",
-    x = "Farm",
-    y = "MP Count (particles per 20g)"
+  
+  geom_boxplot(
+    color = "black",
+    alpha = 0.8,
+    linewidth = 0.6
   ) +
-  theme_minimal()
+  
+  scale_fill_manual(
+    name = "Farm",
+    values = c(
+      "1" = "#ed5353",
+      "2" = "#619cff",
+      "3" = "#F5BB00"
+    )
+  ) +
+  
+  geom_jitter(
+    width = 0.1,
+    alpha = 0.6,
+    color = "black"
+  ) +
+  
+  labs(
+    x = "Farm",
+    y = expression("Abundance (p g"^{-1}*")")
+  ) +
+  
+  theme_minimal() +
+  
+  theme(
+    legend.position = "right",
+    
+    plot.title = element_text(
+      hjust = 0.5
+    ),
+    
+    panel.border = element_rect(
+      color = "black",
+      fill = NA,
+      linewidth = 1
+    )
+  )
 
 mp_count_plot
 
@@ -22,7 +55,6 @@ ggsave(
   dpi = 300
 )
 
-
 kruskal.test(mp_count ~ farm,
              data = main_data)
 
@@ -32,27 +64,54 @@ kruskal.test(mp_count ~ farm,
 #         data = main_data,
 #         method = "bonferroni")
 
-bar_data <- main_data %>%
-  group_by(farm) %>%
-  summarise(
-    total_mp = sum(mp_count, na.rm = TRUE)
-  )
-
 ppg <- ggplot(bar_data,
-       aes(x = farm,
-           y = total_mp,
-           fill = farm)) +
-  geom_col(width = 0.7) +
+              aes(x = farm,
+                  y = total_mp,
+                  fill = farm)) +
+  
+  geom_col(
+    width = 0.7,
+    color = "black",
+    linewidth = 0.5
+  ) +
+  
   geom_text(aes(label = total_mp),
             vjust = -0.5,
             size = 5) +
-  coord_cartesian(ylim = c(0, 2)) +
-  labs(
-    title = "Total Particle/g Per Farm",
-    x = "Farm",
-    y = "Total Particle/g"
+  
+  scale_fill_manual(
+    name = "Farm",
+    values = c(
+      "1" = "#ed5353",
+      "2" = "#619cff",
+      "3" = "#F5BB00"
+    )
   ) +
-  theme_minimal()
+  
+  coord_cartesian(ylim = c(0, 2)) +
+  
+  labs(
+    x = "Farm",
+    y = expression("Abundance (p g"^{-1}*")")
+  ) +
+  
+  theme_minimal() +
+  
+  theme(
+    legend.position = "right",
+    
+    plot.title = element_text(
+      hjust = 0.5
+    ),
+    
+    panel.border = element_rect(
+      color = "black",
+      fill = NA,
+      linewidth = 1
+    )
+  )
+
+ppg
 
 ggsave(
   filename = "plots/ppg.png",
@@ -72,7 +131,7 @@ wet_weight_plot <- ggplot(main_data,
   labs(
     title = "Wet Weight Comparison Between Farms",
     x = "Farm",
-    y = "Wet Weight (g)"
+    y = expression("Abundance (p g"^{-1}*")")
   ) +
   coord_cartesian(ylim = c(50, 800)) +
   theme_minimal()
@@ -100,9 +159,8 @@ correlation_plot <- ggplot(main_data,
   geom_smooth(method = "lm",
               se = TRUE) +
   labs(
-    title = "Correlation Between Wet Weight and MP Count",
     x = "Wet Weight (g)",
-    y = "MP Count (particles per 20g)"
+    y = expression("Abundance (p g"^{-1}*")")
   ) +
   theme_minimal()
 
@@ -147,3 +205,8 @@ cor.test(
   method = "pearson"
 )
 
+main_data %>%
+  group_by(farm) %>%
+  summarise(
+    mean_mp_count = mean(mp_count, na.rm = TRUE)
+  )

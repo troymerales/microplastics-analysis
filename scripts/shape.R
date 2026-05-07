@@ -29,40 +29,54 @@ shape_pie <- ggplot(shape_summary,
 
 shape_pie
 
-# Save plot
-ggsave(
-  filename = "plots/shape_pie.png",
-  plot = shape_pie,
-  width = 7,
-  height = 7,
-  dpi = 900
-)
+
 
 # =========================================================
 # SHAPE COMPARISON BETWEEN FARMS
 # =========================================================
 
-shape_farm_plot <- ggplot(mp_data,
-                          aes(x = farm_mp,
-                              fill = mp_shape)) +
-  geom_bar(position = "fill",
-           color = "white",
-           linewidth = 0.3
-           ) +
-  labs(
-    title = "MP Shape Comparison Between Farms",
-    x = "Farm",
-    y = "Proportion"
+shape_farm_plot <- ggplot(
+  mp_data %>% filter(!is.na(mp_shape)),
+  aes(x = farm_mp,
+      fill = mp_shape)
+) +
+  
+  geom_bar(
+    position = "fill",
+    color = "black",
+    linewidth = 0.3
   ) +
-  scale_y_continuous(labels = scales::percent) +
+  
+  scale_y_continuous(
+    labels = scales::percent
+  ) +
+  
   scale_fill_manual(
     name = "Shape",
     values = c(
-    "fragment" = "#619cff",
-    "fiber" = "#f8766d"
-  ),
-  na.value="lightgrey") +
-  theme_minimal()
+      "fiber" = "#619cff",
+      "fragment" = "#ed5353"
+    )
+  ) +
+  
+  labs(
+    x = "Farm",
+    y = "Proportion"
+  ) +
+  
+  theme_minimal() +
+  
+  theme(
+    plot.title = element_text(
+      hjust = 0.5
+    ),
+    
+    panel.border = element_rect(
+      color = "black",
+      fill = NA,
+      linewidth = 1
+    )
+  )
 
 shape_farm_plot
 
@@ -78,7 +92,6 @@ ggsave(
 shape_table <- table(mp_data$farm_mp,
                      mp_data$mp_shape)
 
-shape_table
 
 chisq.test(shape_table)
 fisher.test(shape_table)

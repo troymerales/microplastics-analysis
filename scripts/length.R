@@ -43,37 +43,53 @@ length_bin_plot <- ggplot(mp_data,
       width = 0.7,
       preserve = "single"
     ),
-    width = 0.5,
-    color = "white"
+    color = "gray",
+    linewidth = 0.1
+  ) +
+  
+  scale_fill_manual(
+    name = "Farm",
+    values = c(
+      "1" = "#ed5353",
+      "2" = "#619cff",
+      "3" = "#F5BB00"
+    )
   ) +
   
   scale_x_discrete(drop = FALSE) +
   
   labs(
-    title = "MP Length Comparison Between Farms",
     x = "Length Range",
-    y = "Frequency",
-    fill = "Farm"
+    y = "Frequency"
   ) +
   
   theme_minimal() +
   
   theme(
+    plot.title = element_text(
+      hjust = 0.5
+    ),
+    
     axis.text.x = element_text(
       angle = 45,
       hjust = 1
+    ),
+    
+    panel.border = element_rect(
+      color = "black",
+      fill = NA,
+      linewidth = 1
     )
   )
 
 length_bin_plot
-
 # Save plot
 ggsave(
   filename = "plots/mp_length_bins.png",
   plot = length_bin_plot,
   width = 10,
   height = 6,
-  dpi = 300
+  dpi = 900
 )
 
 length_table <- table(

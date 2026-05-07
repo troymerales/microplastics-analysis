@@ -23,10 +23,10 @@ lapply(packages, library, character.only = TRUE)
 # =========================
 
 # Main spreadsheet
-main_raw <- read_excel("data.xlsx")
+main_raw <- read_excel("data/data.xlsx")
 
 # MP characteristics spreadsheet
-mp_raw <- read_excel("data_mp.xlsx")
+mp_raw <- read_excel("data/data_mp.xlsx")
 
 # =========================
 # CLEAN DATA
